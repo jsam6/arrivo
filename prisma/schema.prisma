@@ -9,3 +9,43 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  user_id    Int     @id @default(autoincrement())
+  username    String
+  password    String
+  email String  @unique
+  fullname  String?
+  membership  String @default("normal")
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now())
+}
+
+model Post {
+  post_id Int     @id @default(autoincrement())
+  title     String
+  body   String?
+  category_id   Int
+  status  String @default("draft")
+  label   String @default("normal")
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now())
+}
+
+model Category {
+  category_id Int     @id @default(autoincrement())
+  name     String
+  description   String
+  activated   Int
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now())
+}
+
+model Payment {
+  payment_id Int     @id @default(autoincrement())
+  amount     String
+  payment_method   String
+  status   Int
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now())
+}
