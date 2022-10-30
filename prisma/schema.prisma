@@ -19,6 +19,7 @@ model User {
   membership  String @default("normal")
   created_at  DateTime  @default(now())
   updated_at  DateTime  @default(now())
+  posts Post[]
 }
 
 model Post {
@@ -30,6 +31,8 @@ model Post {
   label   String @default("normal")
   created_at  DateTime  @default(now())
   updated_at  DateTime  @default(now())
+  user     User @relation(fields: [user_id], references: [user_id])
+  user_id    Int
 }
 
 model Category {
