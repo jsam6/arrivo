@@ -67,8 +67,60 @@ const view = async (req:Request, res:Response, next:NextFunction) => {
     }
 }
 
+const update = async (req:Request, res:Response, next:NextFunction) => {
+    const { id } = req.params
+    const { name, description, activated } = req.body;
+
+    try {
+        const result = await prisma.category.update({
+            where: {
+                category_id: parseInt(id)
+            },
+            data: {
+                name,
+                description: description,
+                activated: activated,
+            },
+        })
+        console.log(result)
+        res.status(200).send(result)
+        next()
+    } catch(e:unknown) {
+        console.log(e)
+        res.sendStatus(500)
+    }
+}
+
+const deleteCategory = async (req:Request, res:Response, next:NextFunction) => {
+    const { id } = req.params
+
+    const categoryExist = await prisma.category.findFirst({
+        where: {
+            category_id: parseInt(id)
+        }
+    })
+
+    if (!categoryExist) return res.status(400).send("Invalid id")
+
+    try {
+        const result = await prisma.category.delete({
+            where: {
+                category_id: parseInt(id)
+            }
+        })
+        console.log(result)
+        res.status(200).send(result)
+        next()
+    } catch(e:unknown) {
+        console.log(e)
+        res.sendStatus(500)
+    }
+}
+
 export {
     index,
     store,
-    view
+    view,
+    update,
+    deleteCategory
 }

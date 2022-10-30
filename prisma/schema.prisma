@@ -27,8 +27,8 @@ model Post {
   title     String
   body   String?
   category_id   Int
-  status  String @default("draft")
-  label   String @default("normal")
+  status  PostStatus @default(draft)
+  label   PostLabel @default(normal)
   created_at  DateTime  @default(now())
   updated_at  DateTime  @default(now())
   user     User @relation(fields: [user_id], references: [user_id])
@@ -46,6 +46,7 @@ model Category {
   posts Post[]
 }
 
+
 model Payment {
   payment_id Int     @id @default(autoincrement())
   amount     String
@@ -53,4 +54,16 @@ model Payment {
   status   Int
   created_at  DateTime  @default(now())
   updated_at  DateTime  @default(now())
+}
+
+
+
+enum PostStatus {
+  draft
+  published
+  pending_review
+}
+enum PostLabel {
+  normal
+  premium
 }
