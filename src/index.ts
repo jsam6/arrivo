@@ -2,6 +2,7 @@ import cors from 'cors'
 import { Request, Response } from 'express'
 import postRoute from './routes/post.route'
 import authRoute from './routes/auth.route'
+import categoryRoute from './routes/category.route'
 
 const express = require('express')
 const app = express()
@@ -15,8 +16,7 @@ app.use(express.urlencoded({extended: false}))
 
 
 app.use('/post', postRoute)
-// app.use('/game', gameRoute)
-// app.use('/region', regionRoute)
+app.use('/category', categoryRoute)
 app.use('/auth', authRoute)
 
 app.listen(port, () => {

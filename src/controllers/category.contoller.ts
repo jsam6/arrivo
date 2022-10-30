@@ -15,11 +15,7 @@ declare module "express" {
 */
 const index = async (req:Request, res:Response, next:NextFunction) => {
     try {
-        const result = await prisma.post.findMany({
-            include: {
-                categories: true
-            }
-        })
+        const result = await prisma.category.findMany()
         console.log(result)
         res.send(result)
         next()
@@ -31,19 +27,18 @@ const index = async (req:Request, res:Response, next:NextFunction) => {
 
 const store = async (req:Request, res:Response, next:NextFunction)=> {
     let token = jwt.decode(req.token, 'secretkey')
-    const { title, content, region_id, game_id } = req.body;
-    console.log(token.user.user_id)
+    const { name, description, activated } = req.body;
+
     try {
-        const result =  await prisma.post.create({
+        const result =  await prisma.category.create({
             data: {
-                title,
-                body: content,
-                category_id: 1,
-                user_id: token.user.user_id,
+                name,
+                description: description,
+                activated: activated,
             },
         })
         console.log(result)
-        res.status(200).json({message: 'Successfully Created Post', statusCode:200, status:true})
+        res.status(200).json({message: 'Successfully Created category', statusCode:200, status:true})
         next()
     } catch(e: unknown) {
         console.log(e)
@@ -55,12 +50,12 @@ const view = async (req:Request, res:Response, next:NextFunction) => {
     const { id } = req.params
 
     try {
-        const result = await prisma.post.findFirst({
+        const result = await prisma.category.findFirst({
             where: {
-                post_id: parseInt(id)
+                category_id: parseInt(id)
             },
             include: {
-                user: true
+                posts: true
             }
         })
         console.log(result)
@@ -73,5 +68,7 @@ const view = async (req:Request, res:Response, next:NextFunction) => {
 }
 
 export {
-    index, store, view
+    index,
+    store,
+    view
 }

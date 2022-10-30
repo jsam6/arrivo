@@ -33,6 +33,7 @@ model Post {
   updated_at  DateTime  @default(now())
   user     User @relation(fields: [user_id], references: [user_id])
   user_id    Int
+  categories Category[]
 }
 
 model Category {
@@ -42,6 +43,7 @@ model Category {
   activated   Int
   created_at  DateTime  @default(now())
   updated_at  DateTime  @default(now())
+  posts Post[]
 }
 
 model Payment {
