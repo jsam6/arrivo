@@ -14,14 +14,36 @@ declare module "express" {
  * call other imported services, or same service but different functions here if you need to
 */
 const index = async (req:Request, res:Response, next:NextFunction) => {
+    let token = jwt.decode(req.token, 'secretkey')
+
+    console.log(token)
+    const userExist = await prisma.user.findFirst({
+        where: {
+            user_id: token.user.user_id
+        }
+    })
+    if (!userExist) return res.status(400).send("Invalid user")
+
     try {
-        const result = await prisma.post.findMany({
-            include: {
-                categories: true
-            }
-        })
-        console.log(result)
-        res.send(result)
+        // Query normal/premium post ; premium show all.
+        if (userExist.membership == "normal") {
+            const result = await prisma.post.findMany({
+                where: {
+                    label: "normal"
+                },
+                include: {
+                    categories: true
+                }
+            })
+            res.send(result)
+        } else {
+            const result = await prisma.post.findMany({
+                include: {
+                    categories: true
+                }
+            })
+            res.send(result)
+        }
         next()
     } catch(e:unknown) {
         console.log(e)
