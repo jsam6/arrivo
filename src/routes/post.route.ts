@@ -2,23 +2,21 @@ const express = require('express')
 const router = express.Router()
 var jwt = require('jsonwebtoken');
 
-import { index, store, view, update, deletePost } from '../controllers/post.contoller'
+import { index, storeNormal, storePremium, view, update, deletePost } from '../controllers/post.contoller'
+import verifyMembership from '../middlewares/VerifyMembership';
+import verifyPremium from '../middlewares/VerifyPremium';
 import verifyToken from '../middlewares/VerifyToken'
 
 router.get('/', index)
+
 router.get('/:id', view)
 
-router.post('/', (req:any, res:any, next:any) => {
-    verifyToken(req, res, next)
-}, store)
+router.post('/normal', [verifyToken, verifyMembership], storeNormal)
+router.post('/premium', [verifyToken, verifyPremium], storePremium)
 
-router.put('/:id', (req:any, res:any, next:any) => {
-    verifyToken(req, res, next)
-}, update)
+router.put('/:id', [verifyToken, verifyMembership], update)
 
-router.delete('/:id', (req:any, res:any, next:any) => {
-    verifyToken(req, res, next)
-}, deletePost)
+router.delete('/:id', [verifyToken], deletePost)
 
 
 // // FOR TESTING JWT

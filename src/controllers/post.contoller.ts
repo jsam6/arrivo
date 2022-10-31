@@ -29,7 +29,7 @@ const index = async (req:Request, res:Response, next:NextFunction) => {
     }
 }
 
-const store = async (req:Request, res:Response, next:NextFunction)=> {
+const storeNormal = async (req:Request, res:Response, next:NextFunction)=> {
     let token = jwt.decode(req.token, 'secretkey')
     const { title, body, status, label, category_id } = req.body;
 
@@ -42,6 +42,56 @@ const store = async (req:Request, res:Response, next:NextFunction)=> {
     if (!categoryExist) return res.status(400).send("Invalid category_id")
     if (!["draft", "published", "pending_review"].includes(status)) return res.status(400).send("Invalid status")
     if (!["normal", "premium"].includes(label)) return res.status(400).send("Invalid label")
+
+    const userExist = await prisma.user.findFirst({
+        where: {
+            user_id: token.user.user_id
+        }
+    })
+    if (!userExist) return res.status(400).send("Invalid user")
+    if (userExist.membership != "normal") return res.status(403).send("Invalid membership")
+
+    try {
+        const result =  await prisma.post.create({
+            data: {
+                title: title,
+                body: body,
+                status: status,
+                label: label,
+                category_id: category_id,
+                user_id: token.user.user_id,
+            },
+        })
+        console.log(result)
+        res.status(200).json({message: 'Successfully Created Post', statusCode:200, status:true})
+        next()
+    } catch(e: unknown) {
+        console.log(e)
+        res.sendStatus(500)
+    }
+}
+
+const storePremium = async (req:Request, res:Response, next:NextFunction)=> {
+    let token = jwt.decode(req.token, 'secretkey')
+    const { title, body, status, label, category_id } = req.body;
+
+    const categoryExist = await prisma.category.findFirst({
+        where: {
+            category_id: category_id
+        }
+    })
+
+    if (!categoryExist) return res.status(400).send("Invalid category_id")
+    if (!["draft", "published", "pending_review"].includes(status)) return res.status(400).send("Invalid status")
+    if (!["normal", "premium"].includes(label)) return res.status(400).send("Invalid label")
+
+    const userExist = await prisma.user.findFirst({
+        where: {
+            user_id: token.user.user_id
+        }
+    })
+    if (!userExist) return res.status(400).send("Invalid user")
+    if (userExist.membership != "premium") return res.status(403).send("Invalid membership")
 
     try {
         const result =  await prisma.post.create({
@@ -148,5 +198,5 @@ const deletePost = async (req:Request, res:Response, next:NextFunction) => {
 }
 
 export {
-    index, store, view, update, deletePost
+    index, storeNormal, storePremium, view, update, deletePost
 }
