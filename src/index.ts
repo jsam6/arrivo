@@ -9,6 +9,7 @@ import adminPostRoute from './routes/admin/post-admin.route'
 import postRoute from './routes/client/post.route'
 import authRoute from './routes/client/auth.route'
 import categoryRoute from './routes/client/category.route'
+import paymentRoute from './routes/client/payment.route'
 
 const express = require('express')
 const app = express()
@@ -32,6 +33,8 @@ app.use('/admin/post', adminPostRoute)
 app.use('/auth', authRoute)
 app.use('/post', postRoute)
 app.use('/category', categoryRoute)
+app.use('/payment', paymentRoute)
+
 
 app.listen(port, () => {
     console.log(`app listening on port ${port}`)

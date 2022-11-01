@@ -49,7 +49,8 @@ model Category {
 
 
 model Payment {
-  payment_id Int     @id @default(autoincrement())
+  id Int @id @default(autoincrement())
+  payment_id String 
   amount     String
   payment_method   String
   status   Int
