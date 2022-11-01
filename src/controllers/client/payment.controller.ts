@@ -4,7 +4,7 @@ import axios from 'axios'
 
 const jwt = require('jsonwebtoken');
 const prisma = new PrismaClient()
-const stripe = require('stripe')('sk_test_51LzJRLGTNmh9e5XJzPBOQC5yAdIpW48t5HgiMALe8eliRBZxK83H3ikGgGjuvDRkWdBZrOoRdZ8ESLwdx830CiIL00niNXSkGY')
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
 declare module "express" { 
     export interface Request {
