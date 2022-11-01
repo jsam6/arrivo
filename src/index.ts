@@ -4,6 +4,7 @@ import { Request, Response } from 'express'
 import adminAuthRoute from './routes/admin/auth-admin.route'
 import userRoute from './routes/admin/user-admin.route'
 import adminCategoryRoute from './routes/admin/category-admin.route'
+import adminPostRoute from './routes/admin/post-admin.route'
 
 import postRoute from './routes/client/post.route'
 import authRoute from './routes/client/auth.route'
@@ -23,6 +24,7 @@ app.use(express.urlencoded({extended: false}))
 app.use('/admin/auth', adminAuthRoute)
 app.use('/admin/user', userRoute)
 app.use('/admin/category', adminCategoryRoute)
+app.use('/admin/post', adminPostRoute)
 
 
 

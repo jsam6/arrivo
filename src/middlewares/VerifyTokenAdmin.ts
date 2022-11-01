@@ -15,12 +15,14 @@ function verifyTokenAdmin(req: Request, res: Response, next: NextFunction) {
         const bearer = bearerHeader.split(' ')
         // Get token from array
         const bearerToken = bearer[2]
-
+        console.log(bearerToken )
         jwt.verify(bearerToken, "secretkey", (err: Error, user: any) => {
+            console.log(err)
             if (err) {
                 return res.sendStatus(403);
             }
 
+            console.log(user.user)
             // if user not admin
             if (user.user.is_admin == 0 || typeof user.user.is_admin == "undefined") {
                 return res.sendStatus(403);
