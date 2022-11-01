@@ -23,6 +23,7 @@ const login = async (req:Request, res:Response, next:NextFunction) => {
         user_id:user.user_id,
         username:user.username,
         email:user.email,
+        is_admin: 0
     }
 
     jwt.sign({user:jwt_data}, 'secretkey',  { expiresIn: '2 days'},(err:any, token:string)=> {
@@ -67,6 +68,7 @@ const registerUser = async (req:Request, res:Response, next:NextFunction) => {
             user_id:user.user_id,
             username:user.username,
             email:user.email,
+            is_admin: 0
         }
     
         jwt.sign({user:jwt_data}, 'secretkey',  { expiresIn: '2 days'},(err: any, token: string)=> {

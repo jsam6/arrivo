@@ -58,6 +58,7 @@ const view = async (req:Request, res:Response, next:NextFunction) => {
                 posts: true
             }
         })
+        if (!result) return res.status(200).send({})
         console.log(result)
         res.status(200).send(result)
         next()
@@ -109,7 +110,7 @@ const deleteCategory = async (req:Request, res:Response, next:NextFunction) => {
             }
         })
         console.log(result)
-        res.status(200).send(result)
+        res.status(200).send({message: "Successfully deleted", status: true})
         next()
     } catch(e:unknown) {
         console.log(e)

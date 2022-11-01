@@ -2,10 +2,10 @@ const express = require('express')
 const router = express.Router()
 var jwt = require('jsonwebtoken');
 
-import { index, storeNormal, storePremium, view, update, deletePost } from '../controllers/post.contoller'
-import verifyMembership from '../middlewares/VerifyMembership';
-import verifyPremium from '../middlewares/VerifyPremium';
-import verifyToken from '../middlewares/VerifyToken'
+import { index, storeNormal, storePremium, view, update, deletePost } from '../../controllers/client/post.contoller'
+import verifyMembership from '../../middlewares/VerifyMembership';
+import verifyPremium from '../../middlewares/VerifyPremium';
+import verifyToken from '../../middlewares/VerifyToken'
 
 router.get('/', [verifyToken], index)
 

@@ -16,7 +16,6 @@ declare module "express" {
 const index = async (req:Request, res:Response, next:NextFunction) => {
     let token = jwt.decode(req.token, 'secretkey')
 
-    console.log(token)
     const userExist = await prisma.user.findFirst({
         where: {
             user_id: token.user.user_id

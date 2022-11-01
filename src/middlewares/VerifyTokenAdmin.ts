@@ -5,7 +5,7 @@ import { NextFunction, Request, Response } from "express";
 
 const jwt = require('jsonwebtoken');
 
-function verifyToken(req: Request, res: Response, next: NextFunction) {
+function verifyTokenAdmin(req: Request, res: Response, next: NextFunction) {
     // Get auth header value
     const bearerHeader = req.headers['authorization']
 
@@ -20,13 +20,12 @@ function verifyToken(req: Request, res: Response, next: NextFunction) {
             if (err) {
                 return res.sendStatus(403);
             }
-            
-            // if user is admin
-            if (user.user.is_admin == 1 || typeof user.user.is_admin == "undefined") {
+
+            // if user not admin
+            if (user.user.is_admin == 0 || typeof user.user.is_admin == "undefined") {
                 return res.sendStatus(403);
             }
 
-            // req.user = user;
             req.token = bearerToken
             next();
         });
@@ -35,4 +34,4 @@ function verifyToken(req: Request, res: Response, next: NextFunction) {
     }
 }
 
-export = verifyToken
+export = verifyTokenAdmin
