@@ -49,14 +49,7 @@ npx prisma db seed
 ```
 
 # File Structure
-.
-├── ...
-├── test                    # Test files (alternatively `spec` or `tests`)
-│   ├── benchmarks          # Load and stress tests
-│   ├── integration         # End-to-end, integration tests (alternatively `e2e`)
-│   └── unit                # Unit tests
-└── ...
-
+<img src='https://github.com/jsam6/arrivo/blob/master/filestructure.png'/>
 
 # REST API
 
