@@ -14,7 +14,7 @@ declare module "express" {
  * call other imported services, or same service but different functions here if you need to
 */
 const index = async (req:Request, res:Response, next:NextFunction) => {
-    let token = jwt.decode(req.token, 'secretkey')
+    let token = jwt.decode(req.token, process.env.JWT_SECRET_KEY)
 
     const userExist = await prisma.user.findFirst({
         where: {
@@ -61,7 +61,7 @@ const index = async (req:Request, res:Response, next:NextFunction) => {
 }
 
 const storeNormal = async (req:Request, res:Response, next:NextFunction)=> {
-    let token = jwt.decode(req.token, 'secretkey')
+    let token = jwt.decode(req.token, process.env.JWT_SECRET_KEY)
     const { title, body, status, label, category_id } = req.body;
 
     const categoryExist = await prisma.category.findFirst({
@@ -114,7 +114,7 @@ const storeNormal = async (req:Request, res:Response, next:NextFunction)=> {
 }
 
 const storePremium = async (req:Request, res:Response, next:NextFunction)=> {
-    let token = jwt.decode(req.token, 'secretkey')
+    let token = jwt.decode(req.token, process.env.JWT_SECRET_KEY)
     const { title, body, status, label, category_id } = req.body;
 
     const categoryExist = await prisma.category.findFirst({

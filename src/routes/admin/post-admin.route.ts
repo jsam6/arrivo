@@ -21,7 +21,7 @@ router.delete('/:id', [verifyTokenAdmin], deletePost)
 // // FOR TESTING JWT
 // router.get('/create', (req, res, next) => {
 //     verifyToken(req, res, next)
-//     jwt.verify(req.token, 'secretkey', (err, authData)=> {
+//     jwt.verify(req.token, process.env.JWT_SECRET_KEY, (err, authData)=> {
 //         if (err) {
 //             res.sendStatus(403)
 //         } else {

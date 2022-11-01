@@ -6,7 +6,7 @@ const prisma = new PrismaClient()
 const jwt = require('jsonwebtoken')
 
 async function verifyPremium(req: any, res: Response, next: NextFunction) {
-    let token = jwt.decode(req.token, 'secretkey')
+    let token = jwt.decode(req.token, process.env.JWT_SECRET_KEY)
     let user_id = token.user.user_id
 
     const user = await prisma.user.findFirst({

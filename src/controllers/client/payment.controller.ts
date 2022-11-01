@@ -14,7 +14,7 @@ declare module "express" {
 const YOUR_DOMAIN = 'http://localhost:3002';
 
 const makePayment = async (req:Request, res:Response, next:NextFunction) => {
-    let token = jwt.decode(req.token, 'secretkey')
+    let token = jwt.decode(req.token, process.env.JWT_SECRET_KEY)
     const session = await stripe.checkout.sessions.create({
         line_items: [
           {

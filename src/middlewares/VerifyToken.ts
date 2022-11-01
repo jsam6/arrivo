@@ -16,7 +16,7 @@ function verifyToken(req: Request, res: Response, next: NextFunction) {
         // Get token from array
         const bearerToken = bearer[2]
 
-        jwt.verify(bearerToken, "secretkey", (err: Error, user: any) => {
+        jwt.verify(bearerToken, process.env.JWT_SECRET_KEY, (err: Error, user: any) => {
             if (err) {
                 return res.sendStatus(403);
             }

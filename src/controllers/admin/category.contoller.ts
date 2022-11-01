@@ -34,7 +34,7 @@ const index = async (req:Request, res:Response, next:NextFunction) => {
 }
 
 const store = async (req:Request, res:Response, next:NextFunction)=> {
-    let token = jwt.decode(req.token, 'secretkey')
+    let token = jwt.decode(req.token, process.env.JWT_SECRET_KEY)
     const { name, description, activated } = req.body;
 
     try {

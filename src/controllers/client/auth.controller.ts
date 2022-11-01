@@ -26,7 +26,7 @@ const login = async (req:Request, res:Response, next:NextFunction) => {
         is_admin: 0
     }
 
-    jwt.sign({user:jwt_data}, 'secretkey',  { expiresIn: '2 days'},(err:any, token:string)=> {
+    jwt.sign({user:jwt_data}, process.env.JWT_SECRET_KEY,  { expiresIn: '2 days'},(err:any, token:string)=> {
         if (err) {
             return res.send(err)
         }
@@ -71,7 +71,7 @@ const registerUser = async (req:Request, res:Response, next:NextFunction) => {
             is_admin: 0
         }
     
-        jwt.sign({user:jwt_data}, 'secretkey',  { expiresIn: '2 days'},(err: any, token: string)=> {
+        jwt.sign({user:jwt_data}, process.env.JWT_SECRET_KEY,  { expiresIn: '2 days'},(err: any, token: string)=> {
             if (err) {
                 return res.send(err)
             }
