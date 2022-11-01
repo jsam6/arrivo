@@ -50,47 +50,18 @@ npx prisma db seed
 
 # File Structure
 
-📦 arrivo-backend
- ┣ 📂 node_modules
- ┣ 📂 prisma
- ┃ ┣ 📂 seeders
- ┃ ┣ ┗ 📜 user.seeder.ts
- ┃ ┗ 📜 schema.prisma
- ┣ 📂 src
- ┃ ┣ 📂 controllers
- ┃ ┣ ┣ 📂 admin
- ┃ ┣ ┃ ┣ 📜 auth.controller.ts
- ┃ ┣ ┃ ┣ 📜 category.controller.ts
- ┃ ┣ ┃ ┣ 📜 post.controller.ts
- ┃ ┣ ┃ ┗ 📜 user.controller.ts
- ┃ ┣ ┗ 📂 client
- ┃ ┣ ┃ ┣ 📜 auth.controller.ts
- ┃ ┣ ┃ ┣ 📜 category.controller.ts
- ┃ ┣ ┃ ┣ 📜 payment.controller.ts
- ┃ ┣ ┃ ┗ 📜 post.controller.ts
- ┃ ┣ 📂 middlewares
- ┃ ┃ ┣ 📜 VerifyMembership.ts
- ┃ ┃ ┣ 📜 VerifyPremium.ts
- ┃ ┃ ┣ 📜 VerifyToken.ts
- ┃ ┃ ┗ 📜 VerifyTokenAdmin.ts
- ┃ ┣ 📂 routes
- ┃ ┣ ┣ 📂 admin
- ┃ ┣ ┃ ┣ 📜 auth-admin.route.ts
- ┃ ┣ ┃ ┣ 📜 category-admin.route.ts
- ┃ ┣ ┃ ┣ 📜 post-admin.route.ts
- ┃ ┣ ┃ ┗ 📜 user-admin.route.ts
- ┃ ┣ ┗ 📂 client
- ┃ ┣ ┃ ┣ 📜 auth.route.ts
- ┃ ┣ ┃ ┣ 📜 category.route.ts
- ┃ ┣ ┃ ┣ 📜 payment.route.ts
- ┃ ┣ ┃ ┗ 📜 post.route.ts
- ┃ ┗ 📜 index.ts
- ┣ 📜 .env.example
- ┣ 📜 package-lock.json
- ┣ 📜 package.json
- ┣ 📜 tsconfig.json
- ┣ 📜 arrivo.postman_collection.json
- ┗ 📜 README.md
+my-app/
+├─ node_modules/
+├─ public/
+│  ├─ favicon.ico
+│  ├─ index.html
+│  ├─ robots.txt
+├─ src/
+│  ├─ index.css
+│  ├─ index.js
+├─ .gitignore
+├─ package.json
+├─ README.md
 
 
 # REST API
