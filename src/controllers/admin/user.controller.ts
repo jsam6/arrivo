@@ -34,11 +34,7 @@ const createUser = async (req:Request, res:Response, next:NextFunction) => {
         })
 
         return res.json({message: 'Successfully Created User', statusCode:200, status:true ,
-            data: {
-                email:user.email,
-                username:user.username,
-                is_admin: false
-            }
+            data: user
         })
     } catch (err:any) {
         res.sendStatus(500) && next(err)

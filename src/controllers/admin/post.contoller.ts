@@ -24,25 +24,23 @@ const index = async (req:Request, res:Response, next:NextFunction) => {
     if (!userExist) return res.status(400).send("Invalid user")
 
     try {
-        // Query normal/premium post ; premium show all.
-        if (userExist.membership == "normal") {
-            const result = await prisma.post.findMany({
-                where: {
-                    label: "normal"
+        const result = await prisma.post.findMany({
+            include: {
+                categories: {
+                    include: {
+                        category: true
+                    }
                 },
-                include: {
-                    categories: true
+                user: {
+                    select: {
+                        user_id: true,
+                        username: true
+                    }
                 }
-            })
-            res.send(result)
-        } else {
-            const result = await prisma.post.findMany({
-                include: {
-                    categories: true
-                }
-            })
-            res.send(result)
-        }
+            },
+        })
+        res.send(result)
+       
         next()
     } catch(e:unknown) {
         console.log(e)
@@ -78,7 +76,18 @@ const store = async (req:Request, res:Response, next:NextFunction)=> {
                 body: body,
                 status: status,
                 label: label,
-                category_id: category_id,
+                categories: {
+                    create: [
+                        {
+                            createdAt: new Date(),
+                          category: {
+                            connect: {
+                              category_id: category_id,
+                            },
+                          },
+                        }
+                    ],
+                },
                 user_id: token.user.user_id,
             },
         })
@@ -100,8 +109,18 @@ const view = async (req:Request, res:Response, next:NextFunction) => {
                 post_id: parseInt(id)
             },
             include: {
-                user: true
-            }
+                categories: {
+                    include: {
+                        category: true
+                    }
+                },
+                user: {
+                    select: {
+                        user_id: true,
+                        username: true
+                    }
+                }
+            },
         })
         if (!result) return res.status(200).send({})
         console.log(result)
@@ -137,6 +156,14 @@ const update = async (req:Request, res:Response, next:NextFunction) => {
     if (!["normal", "premium"].includes(label)) return res.status(400).send("Invalid label")
 
     try {
+        await prisma.categoriesOnPosts.deleteMany({
+            where: {
+                postId:parseInt(id),
+                categoryId: parseInt(category_id),
+            },
+        });
+
+
         const result = await prisma.post.update({
             where: {
                 post_id: parseInt(id)
@@ -146,7 +173,18 @@ const update = async (req:Request, res:Response, next:NextFunction) => {
                 body: body,
                 status: status,
                 label: label,
-                category_id: category_id
+                categories: {
+                    create: [
+                        {
+                            createdAt: new Date(),
+                            category: {
+                                connect: {
+                                    category_id: category_id,
+                                },
+                            },
+                        }
+                    ],
+                },
             },
         })
         console.log(result)
@@ -170,6 +208,12 @@ const deletePost = async (req:Request, res:Response, next:NextFunction) => {
     if (!postExist) return res.status(400).send("Invalid id")
 
     try {
+        await prisma.categoriesOnPosts.deleteMany({
+            where: {
+                postId:parseInt(id),
+            },
+        })
+        
         const result = await prisma.post.delete({
             where: {
                 post_id: parseInt(id)

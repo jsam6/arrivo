@@ -27,14 +27,13 @@ model Post {
   post_id Int     @id @default(autoincrement())
   title     String
   body   String?
-  category_id   Int
   status  PostStatus @default(draft)
   label   PostLabel @default(normal)
   created_at  DateTime  @default(now())
   updated_at  DateTime  @default(now())
   user     User @relation(fields: [user_id], references: [user_id])
   user_id    Int
-  categories Category[]
+  categories CategoriesOnPosts[]
 }
 
 model Category {
@@ -44,7 +43,7 @@ model Category {
   activated   Int
   created_at  DateTime  @default(now())
   updated_at  DateTime  @default(now())
-  posts Post[]
+  posts CategoriesOnPosts[]
 }
 
 
@@ -59,6 +58,15 @@ model Payment {
 }
 
 
+model CategoriesOnPosts {
+  post       Post     @relation(fields: [postId], references: [post_id])
+  postId     Int // relation scalar field (used in the `@relation` attribute above)
+  category   Category @relation(fields: [categoryId], references: [category_id])
+  categoryId Int // relation scalar field (used in the `@relation` attribute above)
+  createdAt DateTime @default(now())
+
+  @@id([postId, categoryId])
+}
 
 enum PostStatus {
   draft

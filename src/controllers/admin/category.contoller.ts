@@ -15,8 +15,16 @@ declare module "express" {
 */
 const index = async (req:Request, res:Response, next:NextFunction) => {
     try {
-        const result = await prisma.category.findMany()
-        console.log(result)
+        const result = await prisma.category.findMany({
+            include: {
+                posts: {
+                    include : {
+                        post: true
+                    }
+                }
+            }
+        })
+
         res.send(result)
         next()
     } catch(e:unknown) {
@@ -37,7 +45,7 @@ const store = async (req:Request, res:Response, next:NextFunction)=> {
                 activated: activated,
             },
         })
-        console.log(result)
+
         res.status(200).json({message: 'Successfully Created category', statusCode:200, status:true})
         next()
     } catch(e: unknown) {
@@ -55,7 +63,11 @@ const view = async (req:Request, res:Response, next:NextFunction) => {
                 category_id: parseInt(id)
             },
             include: {
-                posts: true
+                posts: {
+                    include : {
+                        post: true
+                    }
+                }
             }
         })
         if (!result) return res.status(200).send({})
@@ -104,6 +116,13 @@ const deleteCategory = async (req:Request, res:Response, next:NextFunction) => {
     if (!categoryExist) return res.status(400).send("Invalid id")
 
     try {
+        
+        await prisma.categoriesOnPosts.deleteMany({
+            where: {
+                categoryId:parseInt(id),
+            },
+        })
+        
         const result = await prisma.category.delete({
             where: {
                 category_id: parseInt(id)
